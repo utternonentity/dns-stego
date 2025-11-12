@@ -1,0 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+
+# Virtual environments
+venv/
+.env/
+.env.bak/
+.venv/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*.bak
+
+# IDE and OS junk
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Test artifacts
+*.coverage
+htmlcov/
+coverage.xml
+
+# Compiled docs
+*.pdf
+*.png
+docs/_build/
+
+# Python packaging
+build/
+dist/
+*.egg-info/
