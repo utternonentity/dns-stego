@@ -45,9 +45,7 @@ pip install -r requirements.txt
 python main.py send \
     --message "привет, мир" \
     --password supersecret \
-    --base-domain covert.example.com \
-    --server 8.8.8.8 \
-    --port 53
+    --base-domain covert.example.com
 ```
 Аргумент `--dry-run` позволяет вывести сформированные домены без отправки.
 
@@ -57,8 +55,7 @@ python main.py receive \
     --password supersecret \
     --base-domain covert.example.com \
     --port 5353 \
-    --timeout 10 \
-    --output message.bin
+    --timeout 10
 ```
 Команда запускает локальный DNS-слушатель, собирает входящие домены, декодирует и расшифровывает
 полезную нагрузку. Вместо прослушивания можно указать файл с доменами через `--domains-file`.
@@ -80,4 +77,4 @@ pytest
 ```
 
 ## Версия
-Актуальная релизная версия: **1.0.0**.
+Актуальная релизная версия: **1.0**.
