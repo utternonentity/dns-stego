@@ -1,0 +1,7 @@
+base_domain: "covert.example.com"
+dns_server: "8.8.8.8"
+dns_port: 53
+chunk_size: 15
+encoding: "base32"
+listener_port: 5353
+response_ip: "127.0.0.1"
