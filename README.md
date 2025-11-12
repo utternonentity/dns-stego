@@ -29,6 +29,7 @@ src/
 
 ## Установка
 ```bash
+git clone https://github.com/utternonentity/dns-stego.git&&cd dns-stego
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
