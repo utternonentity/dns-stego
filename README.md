@@ -1,72 +1,83 @@
-# dnsstego
+# DNS Stego
 
-Prototype toolkit for hiding encrypted data inside DNS queries. The project provides
-building blocks for encoding payloads into domain labels, dispatching them over the
-network, and recovering the secret on the receiving side.
+DNS Stego — это утилита для скрытой передачи зашифрованных данных через DNS-запросы. 
+Проект предоставляет полный набор компонентов: от кодирования полезной нагрузки в доменные
+имена до прослушивания входящих запросов и восстановления исходного сообщения. Решение
+подходит для прототипирования каналов стеганографии, экспериментов с безопасностью сетей
+и обучения методам сокрытия трафика.
 
-## Features
+## Возможности
+- 🔐 **AES-шифрование** полезной нагрузки перед отправкой.
+- 🧩 **Кодирование и декодирование доменов** в Base32 или Base64 с контролем длины меток.
+- 📊 **Оценка риска обнаружения** с помощью эвристической модели RiskController.
+- 📡 **Отправка и прием DNS-запросов** поверх `dnslib` с удобным API.
+- 🧪 **CLI-интерфейс** с командами `send`, `receive` и `tunnel` для запуска сценариев и тестов.
 
-- **AES encryption** of payloads before transport.
-- **Domain encoder/decoder** for Base32/Base64 based DNS labels.
-- **Risk controller** that monitors the statistical footprint of generated domains.
-- **DNS sender/listener** wrappers around `dnslib` for quick experimentation.
-- **Command line interface** with `send`, `receive`, and `tunnel` sub-commands.
+## Архитектура проекта
+```
+src/
+├── agents/           # RiskController и вспомогательные агенты наблюдения
+├── stego/            # Кодировщик, декодер и генератор DNS-пакетов
+├── transport/        # Отправитель, слушатель DNS и туннельный клиент
+└── utils/            # Криптография и журналы
+```
+Главный CLI расположен в `main.py`. Пакет экспортирует ключевые компоненты через `src/__init__.py`.
 
-## Installation
+## Требования
+- Python 3.10+
+- Утилита `pip`
 
+## Установка
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Usage
+## Настройка
+Базовые параметры (сервер, порт, кодирование и др.) можно задать в `config/settings.yaml`. Они
+используются транспортным уровнем и могут быть переопределены через CLI.
 
-### Send a message via DNS
+## Использование
 
+### Отправка сообщения (`send`)
 ```bash
 python main.py send \
-    --message "hello covert world" \
-    --password mysecret \
+    --message "привет, мир" \
+    --password supersecret \
     --base-domain covert.example.com \
-    --server 8.8.8.8
+    --server 8.8.8.8 \
+    --port 53
 ```
+Аргумент `--dry-run` позволяет вывести сформированные домены без отправки.
 
-Use `--dry-run` to inspect the generated domains without sending them.
-
-### Receive and decode
-
+### Прием и расшифровка (`receive`)
 ```bash
 python main.py receive \
-    --password mysecret \
+    --password supersecret \
     --base-domain covert.example.com \
     --port 5353 \
-    --timeout 10
+    --timeout 10 \
+    --output message.bin
 ```
+Команда запускает локальный DNS-слушатель, собирает входящие домены, декодирует и расшифровывает
+полезную нагрузку. Вместо прослушивания можно указать файл с доменами через `--domains-file`.
 
-Incoming queries are stored and decoded back into the original plaintext.
-
-### Tunnel helper
-
-The `tunnel` command prepares the sequence of domains and optionally sends them to the
-configured resolver. It is useful for scripted experiments:
-
+### Подготовка туннеля (`tunnel`)
 ```bash
-python main.py tunnel --file secret.bin --password mysecret --base-domain covert.example.com
+python main.py tunnel \
+    --file secret.bin \
+    --password supersecret \
+    --base-domain covert.example.com \
+    --print-only
+```
+Команда формирует последовательность доменов и при необходимости сразу отправляет их. Ключ `--print-only`
+выводит домены на экран.
+
+## Тестирование
+```bash
+pytest
 ```
 
-## Configuration
-
-Default values can be adjusted in `config/settings.yaml`.
-
-## Development
-
-The codebase is split into logical packages:
-
-- `src/utils`: logging and cryptographic helpers.
-- `src/stego`: encoding/decoding primitives and packet builders.
-- `src/transport`: DNS send/receive abstractions and tunnel utilities.
-- `src/agents`: heuristics that assess the detection risk.
-
-Feel free to extend the risk model, add persistence layers, or integrate more advanced
-traffic analysis modules.
+## Версия
+Актуальная релизная версия: **1.0.0**.

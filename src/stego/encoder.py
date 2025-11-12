@@ -1,4 +1,5 @@
 """Encoding utilities that transform binary payloads into DNS domains."""
+
 from __future__ import annotations
 
 import base64
@@ -60,8 +61,12 @@ def encoded_length(data_length: int, chunk_size: int, encoding: str = "base32") 
     return math.ceil(chunk_size * ratio) * math.ceil(data_length / chunk_size)
 
 
-def build_domains(data: bytes, base_domain: str, chunk_size: int = 15, encoding: str = "base32") -> List[str]:
-    encoder = DomainEncoder(base_domain=base_domain, chunk_size=chunk_size, encoding=encoding)
+def build_domains(
+    data: bytes, base_domain: str, chunk_size: int = 15, encoding: str = "base32"
+) -> List[str]:
+    encoder = DomainEncoder(
+        base_domain=base_domain, chunk_size=chunk_size, encoding=encoding
+    )
     return encoder.encode(data)
 
 

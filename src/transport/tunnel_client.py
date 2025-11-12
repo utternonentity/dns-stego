@@ -1,4 +1,5 @@
 """High level interface for sending and receiving messages."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

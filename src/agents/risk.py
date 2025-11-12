@@ -1,6 +1,7 @@
 # src/agents/risk.py
-from math import log2
 from collections import Counter
+from math import log2
+
 
 def _shannon_entropy(s: str) -> float:
     if not s:
@@ -9,11 +10,13 @@ def _shannon_entropy(s: str) -> float:
     n = len(s)
     return -sum((freq / n) * log2(freq / n) for freq in c.values())
 
+
 class RiskController:
     """
     Минимальный контроллер «риска»: оценивает энтропию доменных меток и их количество.
     Можно расширять под вашу модель обнаружения.
     """
+
     def __init__(self, max_entropy_threshold: float = 4.0, max_label_count: int = 25):
         self.max_entropy_threshold = max_entropy_threshold
         self.max_label_count = max_label_count
@@ -25,6 +28,8 @@ class RiskController:
         return {
             "label_count": len(labels),
             "entropy": ent,
-            "ok": (ent <= self.max_entropy_threshold and len(labels) <= self.max_label_count),
+            "ok": (
+                ent <= self.max_entropy_threshold
+                and len(labels) <= self.max_label_count
+            ),
         }
-

@@ -1,4 +1,5 @@
 """Observation utilities for analysing DNS domain sequences."""
+
 from __future__ import annotations
 
 import math
@@ -33,7 +34,9 @@ def observe(domains: Iterable[str]) -> SequenceObservation:
     total_sequence = "".join(domains)
     entropy = _shannon_entropy(total_sequence)
     average_length = sum(lengths) / len(lengths) if lengths else 0.0
-    return SequenceObservation(lengths=lengths, entropy=entropy, average_length=average_length)
+    return SequenceObservation(
+        lengths=lengths, entropy=entropy, average_length=average_length
+    )
 
 
 __all__ = ["SequenceObservation", "observe"]

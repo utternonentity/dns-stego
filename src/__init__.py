@@ -1,10 +1,12 @@
 """Core package exports for the DNS steganography toolkit."""
 
+from .agents import RiskController
 from .stego import DomainDecoder, DomainEncoder
 from .transport import DNSListener, TunnelClient
 from .transport.dns_sender import DNSSender
 from .utils import AESCipher, get_logger
-from .agents import RiskController
+
+__version__ = "1.0.0"
 
 __all__ = [
     "AESCipher",
@@ -14,5 +16,6 @@ __all__ = [
     "DomainEncoder",
     "RiskController",
     "TunnelClient",
+    "__version__",
     "get_logger",
 ]

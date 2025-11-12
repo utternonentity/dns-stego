@@ -1,11 +1,12 @@
 """Simple DNS listener to collect queries for decoding."""
+
 from __future__ import annotations
 
 import queue
 from dataclasses import dataclass, field
 from typing import Iterable, List, Optional
 
-from dnslib import A, DNSHeader, DNSRecord, QTYPE, RR
+from dnslib import QTYPE, RR, A, DNSHeader, DNSRecord
 from dnslib.server import BaseResolver, DNSServer
 
 from ..utils.logger import get_logger

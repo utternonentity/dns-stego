@@ -1,4 +1,5 @@
 """Command line interface for the dnsstego toolkit."""
+
 from __future__ import annotations
 
 import argparse
@@ -57,7 +58,9 @@ def cmd_send(args: argparse.Namespace) -> None:
     sender.send_domains(domains, risk_window=args.risk_window)
 
 
-def _collect_domains(listener: DNSListener, limit: Optional[int], timeout: Optional[float]) -> List[str]:
+def _collect_domains(
+    listener: DNSListener, limit: Optional[int], timeout: Optional[float]
+) -> List[str]:
     collected: List[str] = []
     start = time.time()
     while True:
@@ -78,7 +81,11 @@ def cmd_receive(args: argparse.Namespace) -> None:
     decoder = DomainDecoder(args.base_domain, args.encoding)
     cipher = AESCipher(args.password)
     if args.domains_file:
-        domains = [line.strip() for line in Path(args.domains_file).read_text().splitlines() if line.strip()]
+        domains = [
+            line.strip()
+            for line in Path(args.domains_file).read_text().splitlines()
+            if line.strip()
+        ]
     else:
         listener = DNSListener(port=args.port, response_ip=args.response_ip)
         listener.start()
@@ -129,21 +136,35 @@ def build_parser() -> argparse.ArgumentParser:
     send_parser.add_argument("--server", type=str, default="127.0.0.1")
     send_parser.add_argument("--port", type=int, default=5353)
     send_parser.add_argument("--chunk-size", type=int, default=15)
-    send_parser.add_argument("--encoding", choices=["base32", "base64"], default="base32")
+    send_parser.add_argument(
+        "--encoding", choices=["base32", "base64"], default="base32"
+    )
     send_parser.add_argument("--risk-window", type=int, default=5)
-    send_parser.add_argument("--dry-run", action="store_true", help="Only print domains")
+    send_parser.add_argument(
+        "--dry-run", action="store_true", help="Only print domains"
+    )
     send_parser.set_defaults(func=cmd_send)
 
     recv_parser = sub.add_parser("receive", help="Run DNS listener and decode payload")
     recv_parser.add_argument("--password", type=str, required=True)
     recv_parser.add_argument("--base-domain", type=str, required=True)
-    recv_parser.add_argument("--encoding", choices=["base32", "base64"], default="base32")
-    recv_parser.add_argument("--domains-file", type=str, help="File containing domains to decode")
+    recv_parser.add_argument(
+        "--encoding", choices=["base32", "base64"], default="base32"
+    )
+    recv_parser.add_argument(
+        "--domains-file", type=str, help="File containing domains to decode"
+    )
     recv_parser.add_argument("--port", type=int, default=5353)
     recv_parser.add_argument("--response-ip", type=str, default="127.0.0.1")
-    recv_parser.add_argument("--limit", type=int, help="Maximum number of domains to capture")
-    recv_parser.add_argument("--timeout", type=float, help="Timeout for listening in seconds")
-    recv_parser.add_argument("--output", type=Path, help="File to store recovered message")
+    recv_parser.add_argument(
+        "--limit", type=int, help="Maximum number of domains to capture"
+    )
+    recv_parser.add_argument(
+        "--timeout", type=float, help="Timeout for listening in seconds"
+    )
+    recv_parser.add_argument(
+        "--output", type=Path, help="File to store recovered message"
+    )
     recv_parser.set_defaults(func=cmd_receive)
 
     tunnel_parser = sub.add_parser("tunnel", help="Prepare domains and send them")
@@ -154,9 +175,13 @@ def build_parser() -> argparse.ArgumentParser:
     tunnel_parser.add_argument("--server", type=str, default="127.0.0.1")
     tunnel_parser.add_argument("--port", type=int, default=5353)
     tunnel_parser.add_argument("--chunk-size", type=int, default=15)
-    tunnel_parser.add_argument("--encoding", choices=["base32", "base64"], default="base32")
+    tunnel_parser.add_argument(
+        "--encoding", choices=["base32", "base64"], default="base32"
+    )
     tunnel_parser.add_argument("--risk-window", type=int, default=5)
-    tunnel_parser.add_argument("--print-only", action="store_true", help="Print the domains instead of sending")
+    tunnel_parser.add_argument(
+        "--print-only", action="store_true", help="Print the domains instead of sending"
+    )
     tunnel_parser.set_defaults(func=cmd_tunnel)
 
     return parser

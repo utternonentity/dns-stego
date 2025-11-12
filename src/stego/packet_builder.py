@@ -1,9 +1,13 @@
 # src/stego/packet_builder.py
 from __future__ import annotations
-import random, socket
+
+import random
+import socket
 from dataclasses import dataclass
-from typing import Dict, Any, Tuple
-from dnslib import DNSHeader, DNSQuestion, DNSRecord, QTYPE
+from typing import Any, Dict, Tuple
+
+from dnslib import QTYPE, DNSHeader, DNSQuestion, DNSRecord
+
 
 def _normalize_qtype(qt) -> int:
     # Принимаем: "A", 1, ["A"], ("A",), "[A]" и т.п.
@@ -19,6 +23,7 @@ def _normalize_qtype(qt) -> int:
         return int(qt)
     except Exception:
         return QTYPE.A
+
 
 @dataclass
 class PacketBuilder:
@@ -43,7 +48,9 @@ class PacketBuilder:
         record.add_question(question)
         return record
 
-    def build_packet(self, domain: str, txid: int | None = None) -> Tuple[bytes, Dict[str, Any]]:
+    def build_packet(
+        self, domain: str, txid: int | None = None
+    ) -> Tuple[bytes, Dict[str, Any]]:
         record = self.build_record(domain, txid=txid)
         data = record.pack()
         qname = str(record.q.qname)

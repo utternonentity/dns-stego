@@ -1,4 +1,5 @@
 """Risk controller that adapts the transmission strategy."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -16,8 +17,12 @@ class RiskController:
         observation = observe(domains)
         if not observation.lengths:
             return 0.0
-        length_score = max((max(observation.lengths) - self.max_length) / self.max_length, 0)
-        entropy_score = max((observation.entropy - self.entropy_threshold) / self.entropy_threshold, 0)
+        length_score = max(
+            (max(observation.lengths) - self.max_length) / self.max_length, 0
+        )
+        entropy_score = max(
+            (observation.entropy - self.entropy_threshold) / self.entropy_threshold, 0
+        )
         # Combine scores and normalise
         score = min(1.0, (length_score + entropy_score) / 2)
         return score

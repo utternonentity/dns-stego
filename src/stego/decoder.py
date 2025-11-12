@@ -1,4 +1,5 @@
 """Decode domain sequences back into the original payload."""
+
 from __future__ import annotations
 
 import base64
@@ -43,7 +44,9 @@ class DomainDecoder:
         return b"".join(payload_parts)
 
 
-def decode_domains(domains: Iterable[str], base_domain: str, encoding: str = "base32") -> bytes:
+def decode_domains(
+    domains: Iterable[str], base_domain: str, encoding: str = "base32"
+) -> bytes:
     decoder = DomainDecoder(base_domain=base_domain, encoding=encoding)
     return decoder.decode(domains)
 

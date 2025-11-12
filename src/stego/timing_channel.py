@@ -1,4 +1,5 @@
 """Simple timing controller for DNS transmissions."""
+
 from __future__ import annotations
 
 import random

@@ -1,4 +1,5 @@
 """Logging utilities for dnsstego."""
+
 from __future__ import annotations
 
 import logging

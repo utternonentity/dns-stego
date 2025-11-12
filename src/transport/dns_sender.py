@@ -1,4 +1,5 @@
 """DNS sender utilities."""
+
 from __future__ import annotations
 
 import socket
@@ -44,8 +45,15 @@ class DNSSender:
         self.send_domains(domains)
 
 
-def send_domains(domains: Iterable[str], server: str = "127.0.0.1", port: int = 5353, qtype: str = "A") -> None:
-    sender = DNSSender(server=server, port=port, packet_builder=PacketBuilder(qtype=qtype))
+def send_domains(
+    domains: Iterable[str],
+    server: str = "127.0.0.1",
+    port: int = 5353,
+    qtype: str = "A",
+) -> None:
+    sender = DNSSender(
+        server=server, port=port, packet_builder=PacketBuilder(qtype=qtype)
+    )
     sender.send_domains(domains)
 
 
