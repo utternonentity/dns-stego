@@ -15,8 +15,8 @@ logger = get_logger(__name__)
 
 @dataclass
 class DNSSender:
-    server: str = "8.8.8.8"
-    port: int = 53
+    server: str = "127.0.0.1"
+    port: int = 5353
     packet_builder: PacketBuilder = field(default_factory=PacketBuilder)
     controller: RiskController = field(default_factory=RiskController)
     timing_channel: TimingChannel = field(default_factory=TimingChannel)
@@ -44,7 +44,7 @@ class DNSSender:
         self.send_domains(domains)
 
 
-def send_domains(domains: Iterable[str], server: str = "8.8.8.8", port: int = 53, qtype: str = "A") -> None:
+def send_domains(domains: Iterable[str], server: str = "127.0.0.1", port: int = 5353, qtype: str = "A") -> None:
     sender = DNSSender(server=server, port=port, packet_builder=PacketBuilder(qtype=qtype))
     sender.send_domains(domains)
 

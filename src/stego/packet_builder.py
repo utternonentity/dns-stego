@@ -33,10 +33,15 @@ class PacketBuilder:
         return self.build_record(domain)
 
     def build_record(self, domain: str, txid: int | None = None) -> DNSRecord:
-        header = DNSHeader(id=(txid if txid is not None else random.randrange(0, 65535)),
-                           qr=0, rd=int(self.rd))
+        header = DNSHeader(
+            id=(txid if txid is not None else random.randrange(0, 65535)),
+            qr=0,
+            rd=int(self.rd),
+        )
         question = DNSQuestion(domain, self._qtype_code())
-        return DNSRecord(header, question)
+        record = DNSRecord(header)
+        record.add_question(question)
+        return record
 
     def build_packet(self, domain: str, txid: int | None = None) -> Tuple[bytes, Dict[str, Any]]:
         record = self.build_record(domain, txid=txid)
