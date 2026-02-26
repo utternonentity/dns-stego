@@ -14,7 +14,6 @@ def _shannon_entropy(s: str) -> float:
 class RiskController:
     """
     Минимальный контроллер «риска»: оценивает энтропию доменных меток и их количество.
-    Можно расширять под вашу модель обнаружения.
     """
 
     def __init__(self, max_entropy_threshold: float = 4.0, max_label_count: int = 25):
